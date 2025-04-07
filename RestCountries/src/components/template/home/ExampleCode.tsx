@@ -26,7 +26,7 @@ function ExampleCode() {
   onClick={showData} 
   className={`
     ${data ? "cursor-not-allowed opacity-50" : ""}
-    mt-9 hover:scale-95 transition-all font-bold py-3 px-6 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50 
+    mt-9 hover:scale-95 transition-all font-bold py-3 px-6 rounded-full bg-gradient-to-br from-purple-700 to-blue-900 shadow-lg shadow-indigo-500/50 
     text-white`
   }
   disabled={data}
