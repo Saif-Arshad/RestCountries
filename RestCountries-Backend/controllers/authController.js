@@ -6,14 +6,17 @@ const DB_NAME = 'restCountries.db';
 const db = new sqlite3.Database(DB_NAME);
 
 exports.register = (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, userType = "user" } = req.body;
+  console.log("🚀 ~ name:", name)
+  console.log("🚀 ~ password:", password)
+  console.log("🚀 ~ email:", email)
   if (!name || !email || !password)
     return res.status(400).json({ error: "Name, email, and password are required." });
 
   const passwordHash = bcrypt.hashSync(password, 10);
-  const sql = "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)";
-  
-  db.run(sql, [name, email, passwordHash], function (err) {
+  const sql = "INSERT INTO users (name, email, password_hash,role) VALUES (?, ?, ?,?)";
+
+  db.run(sql, [name, email, passwordHash, userType], function (err) {
     if (err) {
       if (err.message.includes("UNIQUE constraint failed"))
         return res.status(400).json({ error: "Email already exists." });
@@ -25,10 +28,12 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
   const { email, password } = req.body;
+  console.log("🚀 ~ email:", email)
+  console.log("🚀 ~ password:", password)
   if (!email || !password)
     return res.status(400).json({ error: "Email and password are required." });
 
-  const sql = "SELECT id, password_hash, role FROM users WHERE email = ?";
+  const sql = "SELECT id, password_hash, name,email,role FROM users WHERE email = ?";
   db.get(sql, [email], (err, row) => {
     if (err) return res.status(500).json({ error: "Database error." });
     if (!row) return res.status(401).json({ error: "Invalid email or password." });
@@ -37,9 +42,7 @@ exports.login = (req, res) => {
     if (!isMatch)
       return res.status(401).json({ error: "Invalid email or password." });
 
-    req.session.user_id = row.id;
-    req.session.role = row.role;
-    res.json({ message: "Login successful." });
+    res.json({ message: "Login successful.", user: row });
   });
 };
 

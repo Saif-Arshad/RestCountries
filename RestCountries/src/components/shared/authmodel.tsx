@@ -68,21 +68,20 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
     };
 
     const registerSubmit = async (values: any, { setSubmitting }: any) => {
-        console.log("Registering...", values);
         const payload = {
-            full_name: values.name,
+            name: values.name,
             email: values.email,
             password: values.password,
         }
         try {
             const registerUser = await axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin`,
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
                 payload
             );
-            const data = registerUser.data.body.new_admin_user;
-            console.log("🚀 ~ registerSubmit ~ data:", registerUser)
+            const data = registerUser.data;
+            console.log("🚀 ~ registerSubmit ~ data:", registerUser.data)
             await signIn("credentials", {
-                email: data.email,
+                email: payload.email,
                 password: payload.password,
             });
             console.log("Registered user:", data);

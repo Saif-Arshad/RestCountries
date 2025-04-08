@@ -13,6 +13,7 @@ declare module "next-auth" {
             id?: string;
             email?: string;
             name?: string;
+            userType?: string;
         } & DefaultUser;
     }
 
@@ -20,6 +21,7 @@ declare module "next-auth" {
         id?: string;
         email?: string;
         name?: string;
+        userType?: string;
     }
 }
 
@@ -37,30 +39,27 @@ const authOptions: AuthOptions = {
                         email: credentials?.email,
                         password: credentials?.password,
                     };
+                    console.log("🚀 ~ authorize ~ credentialDetails:", credentialDetails)
                     const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_URL}/api/admin/sign-in`,
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
                         credentialDetails
                     );
                     const user = response.data;
                     console.log(user);
 
-                    if (user.body) {
-                        (await cookies()).set("dj-token", user.body.token, {
-                            expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-                            sameSite: "strict",
-                            path: "/",
-                        });
+                    if (user) {
                         return {
-                            id: user.body.user._id,
-                            email: user.body.user.email,
-                            name: user.body.user.full_name,
+                            id: user.user.id,
+                            email: user.user.email,
+                            name: user.user.name,
+                            userType: user.user.role
                         };
                     } else {
                         throw new Error("Invalid Credentials");
                     }
                 } catch (error: any) {
                     throw new Error(
-                        error.response?.data?.message || "Authorization error"
+                        error.response?.data?.error || "Authorization error"
                     );
                 }
             },
@@ -86,6 +85,8 @@ const authOptions: AuthOptions = {
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
+                // @ts-ignore
+                token.userType = user.userType;
             }
             return token;
         },
@@ -95,6 +96,7 @@ const authOptions: AuthOptions = {
                     id: token.id as string,
                     email: token.email as string,
                     name: token.name as string,
+                    userType: token.userType as string,
                 };
             }
             return session;

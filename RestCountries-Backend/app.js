@@ -2,12 +2,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
-
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
-
+app.use(cors());
 const DB_NAME = 'restCountries.db';
 const db = new sqlite3.Database(DB_NAME);
 
