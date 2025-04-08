@@ -1,5 +1,5 @@
 const axios = require('axios');
-const RESTCOUNTRIES_URL = 'https://restcountries.com/v3.1';
+const RESTCOUNTRIES_URL = 'c';
 
 exports.getCountryInfo = async (req, res) => {
     const countryName = req.query.name;
@@ -10,6 +10,7 @@ exports.getCountryInfo = async (req, res) => {
         const response = await axios.get(`${RESTCOUNTRIES_URL}/name/${countryName}`);
         if (response.status !== 200)
             return res.status(response.status).json({ error: "Failed to fetch data from restcountries." });
+        console.log("🚀 ~ exports.getCountryInfo= ~ response:", response.data)
 
         const countriesData = response.data;
         const filteredList = countriesData.map(c => {

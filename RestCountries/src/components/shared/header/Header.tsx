@@ -10,6 +10,10 @@ const menuItems = [
     name: "Home",
     href: "/",
   },
+  {
+    name: "Explorer",
+    href: "/explorer",
+  },
 
 ];
 
