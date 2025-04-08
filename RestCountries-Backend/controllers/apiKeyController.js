@@ -6,8 +6,9 @@ const DB_NAME = 'restCountries.db';
 const db = new sqlite3.Database(DB_NAME);
 
 exports.generateApiKey = (req, res) => {
-    const userId = req.session.user_id;
-    const { name } = req.body; 
+    const { id } = req.params;
+    const userId = id
+    const { name } = req.body;
     if (!name) return res.status(400).json({ error: "API key name is required." });
 
     const newKey = uuidv4();
@@ -20,7 +21,8 @@ exports.generateApiKey = (req, res) => {
 };
 
 exports.listApiKeys = (req, res) => {
-    const userId = req.session.user_id;
+    const { id } = req.params;
+    const userId = id
     const sql = "SELECT api_key, name FROM api_keys WHERE user_id = ?";
     db.all(sql, [userId], (err, rows) => {
         if (err) return res.status(500).json({ error: "Database error." });
@@ -29,10 +31,9 @@ exports.listApiKeys = (req, res) => {
 };
 
 exports.revokeApiKey = (req, res) => {
-    const userId = req.session.user_id;
     const keyToRevoke = req.params.key;
-    const sql = "DELETE FROM api_keys WHERE user_id = ? AND api_key = ?";
-    db.run(sql, [userId, keyToRevoke], function (err) {
+    const sql = "DELETE FROM api_keys WHERE api_key = ?";
+    db.run(sql, [keyToRevoke], function (err) {
         if (err) return res.status(500).json({ error: "Database error." });
         if (this.changes === 0)
             return res.status(404).json({ error: "API key not found or not owned by you." });
