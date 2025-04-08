@@ -81,13 +81,26 @@ export function UserDropDown() {
                                 <>
                                     <Menu.Item>
                                         {({ active }) => (
-                                            <Link href="/dashboard">
+                                            <Link href="/users">
                                                 <button
                                                     className={`${active ? "bg-gray-100" : ""
                                                         } flex w-full items-center justify-between px-4 py-2 text-sm text-gray-700`}
                                                 >
-                                                    My Dashboard
-                                                    <span className="text-xs">⇧⌘P</span>
+                                                    Manage Users
+                                                    <span className="text-xs">⇧⌘U</span>
+                                                </button>
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link href="/generate-api">
+                                                <button
+                                                    className={`${active ? "bg-gray-100" : ""
+                                                        } flex w-full items-center justify-between px-4 py-2 text-sm text-gray-700`}
+                                                >
+                                                    Manage API Keys
+                                                    <span className="text-xs">⇧⌘A</span>
                                                 </button>
                                             </Link>
                                         )}

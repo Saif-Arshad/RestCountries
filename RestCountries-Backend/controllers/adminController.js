@@ -11,6 +11,16 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
+exports.deleteUser = (req, res) => {
+    const userId = req.params.id;
+    const sql = "DELETE FROM users WHERE id = ?";
+    db.run(sql, [userId], function(err) {
+        if (err) return res.status(500).json({ error: "Database error" });
+        if (this.changes === 0) return res.status(404).json({ error: "User not found" });
+        res.json({ message: "User deleted successfully" });
+    });
+};
+
 exports.getAllApiKeys = (req, res) => {
     const sql = `
     SELECT ak.api_key, ak.name, u.email 

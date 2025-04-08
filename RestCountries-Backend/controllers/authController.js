@@ -6,8 +6,13 @@ const DB_NAME = 'restCountries.db';
 const db = new sqlite3.Database(DB_NAME);
 
 exports.register = (req, res) => {
-  const { name, email, password, userType = "user" } = req.body;
+  const { name, email, password} = req.body;
   console.log("🚀 ~ name:", name)
+  let userType= req.body.userType
+  if(!userType)
+  {
+    userType="user"
+  }
   console.log("🚀 ~ password:", password)
   console.log("🚀 ~ email:", email)
   if (!name || !email || !password)
