@@ -51,15 +51,16 @@ const CountryExplorer: React.FC = () => {
                 }
             );
             const data = await response.json();
+            console.log("🚀 ~ searchCountry ~ data:", data)
             if (response.ok && Array.isArray(data) && data.length > 0) {
                 setCountry(data[0]);
             } else {
-                showToast("Country Not Found", "Unable to find a country with that name. Please try another search.");
+                showToast("Error", data.error);
                 setCountry(null);
             }
-        } catch (error) {
-            console.error("Error fetching country data:", error);
-            showToast("Error", "An error occurred while fetching country data");
+        } catch (error: any) {
+            console.log("Error fetching country data:", error);
+            showToast("Error", error.error);
             setCountry(null);
         } finally {
             setIsLoading(false);
@@ -84,7 +85,7 @@ const CountryExplorer: React.FC = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto my-8 px-4">
+        <div className="max-w-4xl mx-auto my-16 px-4">
             {toast.show && (
                 <div className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow">
                     <p className="font-bold">{toast.title}</p>
@@ -141,8 +142,8 @@ const CountryExplorer: React.FC = () => {
                                     <button
                                         onClick={() => setActiveTab("display")}
                                         className={`py-2 px-4 focus:outline-none ${activeTab === "display"
-                                                ? "border-b-2 border-blue-600 text-blue-600"
-                                                : "text-gray-600"
+                                            ? "border-b-2 border-blue-600 text-blue-600"
+                                            : "text-gray-600"
                                             }`}
                                     >
                                         <Info className="inline mr-2 h-4 w-4" />
@@ -151,8 +152,8 @@ const CountryExplorer: React.FC = () => {
                                     <button
                                         onClick={() => setActiveTab("api")}
                                         className={`py-2 px-4 focus:outline-none ${activeTab === "api"
-                                                ? "border-b-2 border-blue-600 text-blue-600"
-                                                : "text-gray-600"
+                                            ? "border-b-2 border-blue-600 text-blue-600"
+                                            : "text-gray-600"
                                             }`}
                                     >
                                         <Code className="inline mr-2 h-4 w-4" />

@@ -12,7 +12,9 @@ function apiKeyRequired(req, res, next) {
 
     db.get("SELECT user_id FROM api_keys WHERE api_key = ?", [apiKey], (err, row) => {
         if (err) return res.status(500).json({ error: "Database error." });
-        if (!row) return res.status(403).json({ error: "Invalid API key." });
+        console.log("🚀 ~ db.get ~ err:", err)
+        console.log("🚀 ~ db.get ~ row:", row)
+        if (!row || row == undefined) return res.status(403).json({ error: "Invalid API key." });
         req.apiUserId = row.user_id;
         next();
     });

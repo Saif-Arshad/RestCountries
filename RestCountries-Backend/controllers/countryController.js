@@ -1,5 +1,5 @@
 const axios = require('axios');
-const RESTCOUNTRIES_URL = 'c';
+const RESTCOUNTRIES_URL = 'https://restcountries.com/v3.1';
 
 exports.getCountryInfo = async (req, res) => {
     const countryName = req.query.name;
