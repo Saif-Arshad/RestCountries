@@ -89,7 +89,6 @@ const ApiKeyManagement: React.FC = () => {
             });
     };
 
-    // Delete (or revoke) an API key via the API
     const handleDeleteKey = (apiKey: ApiKey) => {
         if (!user) return;
         const targetUserId = apiKey.userId ? apiKey.userId : user.id;

@@ -10,7 +10,7 @@ function ExampleCode() {
 "use client";
 
 const response = await fetch(
-  process.env.NEXT_PUBLIC_BACKEND_URL + '/countries?name=(country name, e.g., Canada)',
+  ${process.env.NEXT_PUBLIC_BACKEND_URL} + '/countries?name=(country name, e.g., Canada)',
   {
     headers: {
       "X-API-KEY": "YOUR_API_KEY"
